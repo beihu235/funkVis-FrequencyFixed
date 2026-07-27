@@ -60,6 +60,9 @@ class SpectralAnalyzer {
     public var updateIntervalMs(default, set):Int = 33;
     private var lastUpdateMs:Int = 0;
     private var lastLevels:Array<Bar> = [];
+    private var graphScale:Array<Float> = [];
+    private var graphEdges:Array<Int> = [];
+    private var graphValues:Array<Int> = [];
     
     // Plan B visualization only: no adaptive scaling flag
     private inline function audioReady():Bool {
@@ -441,7 +444,7 @@ class SpectralAnalyzer {
         if (endBin >= freq.length) endBin = freq.length - 1;
         if (endBin < startBin) endBin = startBin;
         var baseFull = freq.length;
-        var xscale = new Array<Float>();
+        var xscale = graphScale;
         xscale.resize(bands + 1);
         xscale[bands] = baseFull - 0.5;
         for (i in 0...bands) {
@@ -449,7 +452,7 @@ class SpectralAnalyzer {
             xscale[i] = scaled;
         }
         // build integer edges monotonically increasing to avoid duplicate first bins
-        var edges = new Array<Int>();
+        var edges = graphEdges;
         edges.resize(bands + 1);
         edges[0] = startBin;
         edges[bands] = endBin;
@@ -463,7 +466,7 @@ class SpectralAnalyzer {
             if (remaining < barsLeft) ei = endBin - barsLeft; // ensure space for remaining bars
             edges[i] = ei;
         }
-        var graph = new Array<Int>();
+        var graph = graphValues;
         graph.resize(bands);
         for (i in 0...bands) {
             var a = edges[i];

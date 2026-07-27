@@ -88,23 +88,47 @@ class Signal {
 		Returns the global maximum.
 	**/
 	public static function max(y:Array<Float>) : Float
-		return y.fold(Math.max, y[0]);
+	{
+		var result = y[0];
+		for (i in 1...y.length)
+			if (y[i] > result)
+				result = y[i];
+		return result;
+	}
 
 	/**
 		Returns the global maximum's index.
 	**/
 	public static function maxi(y:Array<Float>) : Int
-		return y.foldi((yi, m, i) -> yi > y[m] ? i : m, 0);
+	{
+		var result = 0;
+		for (i in 1...y.length)
+			if (y[i] > y[result])
+				result = i;
+		return result;
+	}
 
 	/**
 		Returns the global minimum.
 	**/
 	public static function min(y:Array<Float>) : Float
-		return y.fold(Math.min, y[0]);
+	{
+		var result = y[0];
+		for (i in 1...y.length)
+			if (y[i] < result)
+				result = y[i];
+		return result;
+	}
 
 	/**
 		Returns the global minimum's index.
 	**/
 	public static function mini(y:Array<Float>) : Int
-		return y.foldi((yi, m, i) -> yi < y[m] ? i : m, 0);
+	{
+		var result = 0;
+		for (i in 1...y.length)
+			if (y[i] < y[result])
+				result = i;
+		return result;
+	}
 }
